@@ -1,0 +1,6 @@
+USE BD12022677;
+SHOW TABLES;
+CREATE TABLE alunos(nome VARCHAR(100), RA INT PRIMARY KEY, curso VARCHAR(100));
+SELECT * FROM alunos;
+INSERT INTO alunos(nome, RA, curso) VALUES ("João Silva", "12345", "Engenharia");
+INSERT INTO alunos(nome, RA, curso) VALUES ("Maria Oliveira", "67890", "Computação");
