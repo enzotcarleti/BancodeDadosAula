@@ -16,6 +16,10 @@ ADD COLUMN data_admissao DATE NOT NULL;
 
 update funcionarios set data_admissao "2026-01-01";
 
+INSERT INTO funcionarios (id, nome, cargo, salario, data_admissao) VALUES
+("Rafa", "Analista", "4000", "19/03/2026")
+("Pedro", "Segurança", "7000", "4/03/2026");
+
 4 - ALTER TABLE funcionarios
 DROP COLUMN cargo;
 
