@@ -62,6 +62,8 @@ INSERT INTO usuarios(nome, sobrenome, email, numero_telefone, senha_hash, nome_s
 
 INSERT INTO precos(preco, tipo_corte) VALUES (35.00, 'Corte Simples');
 INSERT INTO precos(preco, tipo_corte) VALUES (55.00, 'Corte com Barba');
+INSERT INTO precos(preco, tipo_corte) VALUES (40.00, 'Corte com sombrancelha');
+INSERT INTO precos(preco, tipo_corte) VALUES (30.00, 'Barba Completa');
 
 INSERT INTO agendamentos(horario, id_usuario, id_barbeiro, id_preco) VALUES ('2026-05-10', 1, 1, 1);
 INSERT INTO agendamentos(horario, id_usuario, id_barbeiro, id_preco) VALUES ('2026-05-12', 2, 2, 2);
