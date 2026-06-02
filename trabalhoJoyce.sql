@@ -13,8 +13,12 @@ data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE barbeiros(
 id_barbeiro INT PRIMARY KEY AUTO_INCREMENT,
 nome VARCHAR(100) NOT NULL,
+nome_social VARCHAR(100),
+chave_pix VARCHAR(100) NOT NULL,
 sobrenome VARCHAR(100) NOT NULL,
 email VARCHAR(100) NOT NULL,
+lgbd boolean DEFAULT FALSE,
+data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 numero_telefone VARCHAR(100) NOT NULL);
 
 CREATE TABLE precos(
@@ -29,23 +33,12 @@ id_usuario INT,
 id_barbeiro INT,
 id_preco INT,
 CONSTRAINT fk_idUsuario
-FOREIGN KEY agendamentos(id_usuario) REFERENCES usuarios(id),
+FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
 CONSTRAINT fk_idBarbeiro
-FOREIGN KEY agendamentos(id_barbeiro) REFERENCES barbeiros(id_barbeiro),
+FOREIGN KEY (id_barbeiro) REFERENCES barbeiros(id_barbeiro),
 CONSTRAINT fk_idPreco
-FOREIGN KEY agendamentos(id_preco) REFERENCES precos(id_preco)
+FOREIGN KEY (id_preco) REFERENCES precos(id_preco)
 );
-
-CREATE TABLE barbeiros(
-id_barbeiro INT PRIMARY KEY AUTO_INCREMENT,
-nome VARCHAR(100) NOT NULL,
-nome social VARCHAR(100),
-chave_pix VARCHAR(100) NOT NULL,
-sobrenome VARCHAR(100) NOT NULL,
-email VARCHAR(100) NOT NULL,
-lgbd boolean DEFAULT FALSE,
-data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-numero_telefone VARCHAR(100) NOT NULL);
 
 CREATE TABLE pagamentos (
 id_pagamento INT PRIMARY KEY AUTO_INCREMENT,
@@ -63,9 +56,10 @@ CREATE TABLE logs_auditoria (
     id_usuario INT NOT NULL,
     acao VARCHAR(100),
     descricao TEXT,
-    status_agendamento VARCHAR (10) DEFAULT 'Erro');
+    status_agendamento VARCHAR(10) DEFAULT 'Erro',
     CONSTRAINT fk_idusuario
-FOREIGN KEY agendamentos(id_preco) REFERENCES usuarios(id)
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id)
+);
 
 ALTER TABLE usuarios MODIFY COLUMN numero_telefone VARCHAR(11);
 
@@ -99,18 +93,13 @@ SELECT
 FROM usuarios
 ORDER BY nome ASC;
 
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'Joses', 'Bedáni', 'josesbedani@gmail.com', '19997661697');
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'enzo', 'carleti', 'enzoup@gmail.com', '19967546789');
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'eduardo', 'colmati', 'educp@gmail.com', '19982168348');
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'Lucas', 'Ferreira', 'lucas.ferreira@barber.com', '11954321678');
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'Rafael', 'Mendes', 'rafael.mendes@barber.com', '21987654321');
-INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone) VALUES (
-'Pedro', 'Almeida', 'pedro.almeida@barber.com', '31976543210');
+INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone, chave_pix) VALUES
+('Joses',   'Bedáni',  'josesbedani@gmail.com',    '19997661697', '19997661697'),
+('Enzo',    'Carleti', 'enzoup@gmail.com',          '19967546789', '19967546789'),
+('Eduardo', 'Colmati', 'educp@gmail.com',           '19982168348', '19982168348'),
+('Lucas',   'Ferreira','lucas.ferreira@gmail.com', '11954321678', '11954321678'),
+('Rafael',  'Mendes',  'rafael.mendes@gmail.com',  '21987654321', '21987654321'),
+('Pedro',   'Almeida', 'pedro.almeida@gmail.com',  '31976543210', ''31976543210');
 
 INSERT INTO usuarios(nome, sobrenome, email, numero_telefone, senha_hash, nome_social, novidades, data_criacao) VALUES
 ('Carlos', 'Oliveira', 'carlos.oliveira@gmail.com', '21998765432', 'hash789ghi', '', true, '2026-03-05'),
@@ -119,7 +108,7 @@ INSERT INTO usuarios(nome, sobrenome, email, numero_telefone, senha_hash, nome_s
 ('Fernanda', 'Rocha', 'fernanda.rocha@gmail.com', '51965432109', 'hash987pqr', 'Fê', true, '2026-04-18'),
 ('Gabriel', 'Martins', 'gabriel.martins@yahoo.com', '61954321098', 'hash147stu', '', false, '2026-05-02');
 INSERT INTO usuarios(nome, sobrenome, email, numero_telefone, senha_hash, nome_social, novidades, data_criacao) VALUES
-('João', 'Silva', 'joao.silva@gmail.com', '11987654321', 'hash123abc', 'João', true, '2026-01-15');
+('Marcio', 'Silva', 'marcio.silva@gmail.com', '11987654321', 'hash123abc', 'Marcio', true, '2026-01-15');
 INSERT INTO usuarios(nome, sobrenome, email, numero_telefone, senha_hash, nome_social, novidades, data_criacao) VALUES
 ('Maria', 'Souza', 'maria.souza@gmail.com', '11912345678', 'hash456def', '', false, '2026-02-20');
 
@@ -133,11 +122,11 @@ INSERT INTO agendamentos(horario, id_usuario, id_barbeiro, id_preco) VALUES ('20
 INSERT INTO agendamentos(horario, id_usuario, id_barbeiro, id_preco) VALUES
 ('2026-05-14 09:00:00', 3, 1, 3),
 ('2026-05-15 10:30:00', 4, 3, 2),
-('2026-05-16 14:00:00', 5, 2, 5),
+('2026-05-16 14:00:00', 5, 2, 2),
 ('2026-05-17 11:00:00', 1, 4, 4),
-('2026-05-18 15:30:00', 6, 5, 6),
+('2026-05-18 15:30:00', 6, 5, 1),
 ('2026-05-19 08:00:00', 2, 1, 1),
-('2026-05-20 13:00:00', 3, 3, 7);
+('2026-05-20 13:00:00', 3, 3, 4);
 
 INSERT INTO pagamentos(id_agendamento, valor_pago, metodo_pagamento, status_pagamento, data_pagamento) VALUES
 (1, 35.00, 'PIX', 'Pago', '2026-05-10 10:05:00'),
