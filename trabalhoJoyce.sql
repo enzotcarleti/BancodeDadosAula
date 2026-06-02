@@ -63,36 +63,6 @@ CREATE TABLE logs_auditoria (
 
 ALTER TABLE usuarios MODIFY COLUMN numero_telefone VARCHAR(11);
 
-SELECT 
-    SUM(valor_pago) AS 'Faturamento Total Acumulado (R$)',
-    COUNT(id_pagamento) AS 'Total de Serviços Pagos'
-FROM pagamentos
-WHERE status_pagamento = 'Pago';
-
-SELECT 
-    DATE_FORMAT(a.horario, '%d/%m/%Y') AS 'Data do Agendamento',
-    IF(u.nome_social != '', u.nome_social, u.nome) AS 'Cliente',
-    u.numero_telefone AS 'Telefone Cliente',
-    b.nome AS 'Barbeiro',
-    p.tipo_corte AS 'Serviço Escolhido',
-    p.preco AS 'Valor (R$)'
-FROM agendamentos a
-JOIN usuarios u ON a.id_usuario = u.id
-JOIN barbeiros b ON a.id_barbeiro = b.id_barbeiro
-JOIN precos p ON a.id_preco = p.id_preco
-ORDER BY a.horario ASC;
-
-SELECT 
-    id AS 'ID',
-    IF(nome_social != '', nome_social, nome) AS 'Nome/Nome Social',
-    CONCAT(nome, ' ', sobrenome) AS 'Nome Completo',
-    email AS 'E-mail',
-    numero_telefone AS 'WhatsApp/Telefone',
-    IF(novidades, 'Sim', 'Não') AS 'Recebe Marketing?',
-    DATE_FORMAT(data_criacao, '%d/%m/%Y') AS 'Data de Cadastro'
-FROM usuarios
-ORDER BY nome ASC;
-
 INSERT INTO barbeiros(nome, sobrenome, email, numero_telefone, chave_pix) VALUES
 ('Joses',   'Bedáni',  'josesbedani@gmail.com',    '19997661697', '19997661697'),
 ('Enzo',    'Carleti', 'enzoup@gmail.com',          '19967546789', '19967546789'),
@@ -150,3 +120,33 @@ INSERT INTO logs_auditoria(data_hora, id_usuario, acao, descricao, status_agenda
 (NOW(), 6, 'PAGAMENTO', 'Pagamento registrado com sucesso', 'OK'),
 (NOW(), 2, 'LOGOUT', 'Usuário encerrou sessão', 'OK'),
 (NOW(), 3, 'AGENDAMENTO', 'Usuário remarcou horário', 'OK');
+
+SELECT 
+    SUM(valor_pago) AS 'Faturamento Total Acumulado (R$)',
+    COUNT(id_pagamento) AS 'Total de Serviços Pagos'
+FROM pagamentos
+WHERE status_pagamento = 'Pago';
+
+SELECT 
+    DATE_FORMAT(a.horario, '%d/%m/%Y') AS 'Data do Agendamento',
+    IF(u.nome_social != '', u.nome_social, u.nome) AS 'Cliente',
+    u.numero_telefone AS 'Telefone Cliente',
+    b.nome AS 'Barbeiro',
+    p.tipo_corte AS 'Serviço Escolhido',
+    p.preco AS 'Valor (R$)'
+FROM agendamentos a
+JOIN usuarios u ON a.id_usuario = u.id
+JOIN barbeiros b ON a.id_barbeiro = b.id_barbeiro
+JOIN precos p ON a.id_preco = p.id_preco
+ORDER BY a.horario ASC;
+
+SELECT 
+    id AS 'ID',
+    IF(nome_social != '', nome_social, nome) AS 'Nome/Nome Social',
+    CONCAT(nome, ' ', sobrenome) AS 'Nome Completo',
+    email AS 'E-mail',
+    numero_telefone AS 'WhatsApp/Telefone',
+    IF(novidades, 'Sim', 'Não') AS 'Recebe Marketing?',
+    DATE_FORMAT(data_criacao, '%d/%m/%Y') AS 'Data de Cadastro'
+FROM usuarios
+ORDER BY nome ASC;
